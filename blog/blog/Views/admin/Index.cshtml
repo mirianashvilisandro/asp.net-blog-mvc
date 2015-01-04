@@ -1,0 +1,76 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>my blog</title>
+    <!-- Bootstrap -->
+    <link href="@Url.Content("~/Content/bootstrap.min.css")" rel="stylesheet">
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style>
+        h1 {
+           margin-bottom:50px;
+        }
+        input {
+           width:250px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Admin Panel</h1>
+        <p style="display:none;" id="message" class="well"></p>
+        <div class="form-group">
+           <label class="control-label">UserName</label>
+           <div class="controls">
+               <input type="text" id="username">
+            </div>
+         </div>
+         <div class="form-group">
+           <label class="control-label">Password</label>
+             <div class="controls">
+                <input type="password" id="password">
+             </div>
+          </div>
+          <button class="btn btn-default" id="submit">Submit</button>
+    </div>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="@Url.Content("~/Scripts/jquery-2.1.1.min.js")"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
+    <script>
+        $(document).ready(function () {
+            $('#submit').click(function () {
+                var username = $('#username').val();
+                var password = $('#password').val();
+                if (username == "" || password == "") {
+                    $('#message').html('Some textfields is <b>empty</b>!');
+                    $('#message').show('slow');
+                }
+                else
+                {
+                    $.post('/admin/check', {username:username,password:password}, function (data) {
+                        if (data == -1) {
+                            $('#message').show('slow');
+                            $('#message').html('Wrong <b>password</b> & <b>username</b>!');
+                        }
+                        else
+                        {
+                            window.location.href = '@Url.Content("~/admin/main/")';
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
